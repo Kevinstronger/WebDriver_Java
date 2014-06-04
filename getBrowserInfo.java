@@ -10,7 +10,40 @@ mozilla/4.0 (compatible; msie 8.0; windows nt 6.1; trident/4.0; slcc2; .net clr 
 
 */
 
-public String getBrowserInfo(WebDriver driver) {
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeTest;
+import org.testng.annotations.AfterTest;
+
+public class Test1 {
+	WebDriver driver = null;
+
+	
+
+	@BeforeTest
+	public void beforeTest() {
+		/*System.setProperty("webdriver.chrome.driver",
+				"./lib/driver/chromedriver.exe");
+		driver = new ChromeDriver();*/
+		
+		driver = new FirefoxDriver();
+	}
+	
+	@Test
+	public void test() {
+		driver.get("http://www.baidu.com");
+		System.out.println(getBrowserInfo(driver));
+	}
+
+	@AfterTest(alwaysRun=true)
+	public void afterTest() {
+		driver.close();
+	}
+	
+	public String getBrowserInfo(WebDriver driver) {
 		String js = "return navigator.userAgent.toLowerCase();";
 		String value = (String)((JavascriptExecutor) driver).executeScript(js);
 		String browser = "当前启动的浏览器是： ";
@@ -30,3 +63,5 @@ public String getBrowserInfo(WebDriver driver) {
 		}
 		return browser + version;
 	}
+	
+}
