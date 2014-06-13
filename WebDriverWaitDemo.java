@@ -44,6 +44,32 @@ public class WaitDemo {
 		}
 	}
 
+	@Test
+	public void test2(){
+		PropertyConfigurator.configure("./conf/log4j.properties");
+		InitMessage.setTestMessage("Testing", AlertDemo.class);
+		driver.get("file:///D:/demo.html");
+		driver.findElement(By.xpath("//div[@id='wait']/input")).click();
+		WebDriverWait wait = new WebDriverWait(driver, 5);
+		WebElement element = wait.until(new ExpectedCondition<WebElement>() {
+
+			@Override
+			public WebElement apply(WebDriver d) {
+				return d.findElement(By.xpath("//div[@id='display']/div"));
+			}
+			
+		});
+		
+		if(element.getText().contains("wait for display")){
+			
+			log.info("---在页面上出现要查找的文字---");
+		}else {
+			log.error("--指定的文字没有出现在页面上--- ");
+		}
+		
+		
+	}
+	
 	@AfterTest(alwaysRun = true)
 	public void afterTest() {
 		driver.quit();
